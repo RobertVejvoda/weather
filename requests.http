@@ -1,0 +1,21 @@
+
+# execute with no Dapr
+POST http://localhost:5011/scheduled-forecast
+
+###
+
+# execute Dapr sidecar healthcheck
+GET http://localhost:6011/v1.0/healthz
+
+###
+
+# execute via Dapr sidecar
+POST http://localhost:6011/scheduled-forecast
+dapr-app-id: forecast-api
+
+###
+
+# execute via Dapr sidecar (all in url)
+POST http://localhost:6011/v1.0/invoke/forecast-api/method/scheduled-forecast
+
+###

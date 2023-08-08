@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forecast
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: weather
+    service: forecast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: forecast
+  template:
+    metadata:
+      labels:
+        app: weather
+        service: forecast
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "forecast-api"
+        dapr.io/app-port: "80"
+        dapr.io/config: "dapr-config"
+        dapr.io/log-as-json: "true"
+    spec:
+      containers:
+      - env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        name: forecast-api
+        image: robertvejvoda/forecast-api:1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: forecast-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: weather
+    service: forecast
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: dapr-http
+      port: 3500
+      targetPort: 3500
+      protocol: TCP
+    - name: dapr-grpc
+      port: 50001
+      targetPort: 50001
+      protocol: TCP
+  selector:
+    service: forecast
+    
+

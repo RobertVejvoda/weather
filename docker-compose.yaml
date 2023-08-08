@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+
+  forecast:
+    container_name: forecast-api
+    image: forecast-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./ForecastAPI/Dockerfile
+    ports:
+      - "5011:80"       # app
+      - "6011:3500"
+      - "60011:50001"
+      - "9991:9090"
+
+  forecast-dapr:
+    container_name: forecast-api-dapr
+    image: daprio/daprd:1.11.0
+    network_mode: "service:forecast"
+    command: [ "./daprd",
+               "--app-id", "forecast-api",
+               "--dapr-http-port", "3500",
+               "--dapr-grpc-port", "50001",
+               "--metrics-port", "9090",
+               "--app-port", "80",   # app
+               "--placement-host-address", "dapr-placement:50007",
+               "--components-path", "/components",
+               "--config", "/configuration/dapr-config.yaml"
+    ]
+    volumes:
+      - "./dapr/components/:/components"
+      - "./dapr/configuration/:/configuration"
+    depends_on:
+      - forecast
+ 
+  dapr-placement:
+    image: daprio/dapr:1.11.0
+    command: [ "./placement", "-port", "50007", "-log-level", "debug" ]
+    ports:
+      - "50007:50007"
