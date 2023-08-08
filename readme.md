@@ -21,7 +21,7 @@ Container: forecast-api
 
 ---
 
-## How to run:
+## How to run
 
 1. Debug (Dapr starts automatically)
 
@@ -43,7 +43,7 @@ c. Clean up when finished
 
 `helm uninstall -f values.yaml weather .`
 
-## How to test:
+## How to test
 
 Depends on how it's run, navigate to zipkin address http://localhost:9411/zipkin. There should be records from scheduler run. If page is not reachable, make sure to port-forward service `k port-forward svc/zipkin 9411:9411 -n weather-forecast`
 
