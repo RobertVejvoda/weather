@@ -7,7 +7,7 @@ metadata:
     app: weather
     service: forecast
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       service: forecast
@@ -53,7 +53,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 80
+      targetPort: 8080
       protocol: TCP
     - name: dapr-http
       port: 3500

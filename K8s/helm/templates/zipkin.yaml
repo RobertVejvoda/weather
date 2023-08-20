@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: zipkin
-  namespace: weather-forecast
+  namespace: {{ .Values.namespace }}
   labels:
     app: weather
     service: zipkin
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: zipkin
-          image: openzipkin/zipkin-slim
+          image: openzipkin/zipkin
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -32,9 +32,9 @@ kind: Service
 apiVersion: v1
 metadata:
   name: zipkin
-  namespace: weather-forecast
+  namespace: {{ .Values.namespace }}
   labels:
-    app: eshop
+    app: weather
     service: zipkin
 spec:
   ports:

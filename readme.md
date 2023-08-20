@@ -39,6 +39,8 @@ b. Deploy code from helm folder (kubectl/helm)
 
 `helm install -f values.yaml weather .`
 
+See logs: `kubectl logs -l service=zipkin -c zipkin --namespace weather-forecast -f`
+
 c. Clean up when finished
 
 `helm uninstall -f values.yaml weather .`
