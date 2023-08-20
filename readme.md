@@ -5,9 +5,9 @@ Dapr sidecar is attached and Cron input binding triggers calls to the endpoint p
 
 Config: Open
 
-Tracing: Zipkin
+Tracing: Zipkin, OpenTelemetry (to be added)
 
-Stats & metrics: Prometheus, Grafana [todo]
+Stats & metrics: Prometheus, Grafana
 
 ---
 
